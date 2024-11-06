@@ -46,6 +46,23 @@ class Rectangle : public Shape {
         }
 };
 
+class Triangle : public Shape {
+    private:
+        double base, height;
+
+    public:
+        void read(std::istream& in) {
+            std::cout << "Enter base and height: ";
+            in >> base >> height;
+        }
+        double area() const {
+            return base * height;
+        }
+        void display(std::ostream& out) const {
+            out << "Rectangle with base " << base << " and height " << height;
+        }
+};
+
 // Function to print shape area
 void printArea(Shape* shape) {
     shape->display(std::cout);
@@ -57,17 +74,20 @@ int main() {
     Shape* shape = nullptr;
     int choice;
 
-    std::cout << "Choose a shape (1 = Circle, 2 = Rectangle): ";
+    std::cout << "Choose a shape (1 = Circle, 2 = Rectangle, 3 = Triangle): ";
     std::cin >> choice;
 
     if (choice == 1) {
         shape = new Circle();
     } else if (choice == 2) {
         shape = new Rectangle();
+    } else if (choice == 3) {
+        shape = new Triangle();
     } else {
         std::cout << "Invalid choice." << std::endl;
         return 1;
     }
+    
 
     shape->read(std::cin);
     printArea(shape);
