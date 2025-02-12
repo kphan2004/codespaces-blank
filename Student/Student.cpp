@@ -1,36 +1,20 @@
 #include "Student.h"
 
-Student::Student (std::string fName, std::string lName, int id) : firstName(fName), lastName(lName), id(id), gradeCount(0) {
-
-    for (int i = 0; i < 10; i++) {
-        grade[i] = 0;
-    }
-}
-void Student::setFirsttName(std::string fName) {
-    this->firstName = fName;
-}
-std::string Student::getFirstName() const {
-   return 0;
+Student::Student() : firstName(""), lastName(""), id(0) {
+    
 }
 
-void Student::setLasttName(std::string fName) {
-     this->lastName = lName;
-}
-std::string Student::getLastName() const {
-    return 0;
+Student::Student(string firstName, string lastName, int id)
+    : firstName(firstName), lastName(lastName), id(id) {
 }
 
-void Student::setId(int id) {
-    this->id = id;
+string Student::getFirstName() const {
+    return firstName;
 }
-int getId() const {
-    return 0;
-}
+string Student::getLastName() const {
+    return lastName;
 
-void Student::addGrade(int grade) {
-    std::cout
 }
-int* getGrades();
-int getGradeCount() const;
-
- double calculateAverage() const;
+int Student::getId() const {
+    return id;
+}
