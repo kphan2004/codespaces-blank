@@ -19,6 +19,12 @@ public:
     string getLastName() const;
     int getId() const;
 
+    // Setters 
+    void setFirstName(const string firstName);
+    void setLastName(const string lastName);
+    void setId(int id);
+
+
 
 };
 

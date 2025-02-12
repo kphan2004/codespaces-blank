@@ -45,14 +45,14 @@ int main() {
 
     StudentIdComparator idCmp;
     Student maxById = findMax(students, idCmp);
-    cout << "Student with id: \n";
+    cout << "Student with highest id: \n";
     cout << maxById.getId() << ": " << maxById.getFirstName() << ", " << maxById.getLastName() << endl;
     cout << endl;
 
 
     StudentNameComparator nameCmp;
     Student maxByName = findMax(students, nameCmp);
-    cout << "Student with full First & Last Name: \n";
+    cout << "Student with ID, First & Last Name Combination: \n";
     cout << maxByName.getId() << ": " << maxByName.getFirstName() << ", " << maxByName.getLastName() << endl;
     cout << endl;
 

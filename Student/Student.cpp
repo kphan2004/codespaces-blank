@@ -18,3 +18,12 @@ string Student::getLastName() const {
 int Student::getId() const {
     return id;
 }
+void Student::setFirstName(const string firstName) {
+    this->firstName = firstName;
+}
+void Student::setLastName(const string lastName) {
+    this->lastName = lastName;
+}
+void Student::setId(int id) {
+    this->id = id;
+}
