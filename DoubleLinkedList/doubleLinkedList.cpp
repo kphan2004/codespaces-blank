@@ -205,7 +205,7 @@ bool DoubleLinkedList::remove(int item) {
 }
 
 // Display all items in the list
-void DoubleLinkedList::print() const {
+void DoubleLinkedList::print() {
     // Insert in the middle - find the correct position
     Node* recent = head;
 
