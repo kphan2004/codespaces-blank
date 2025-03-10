@@ -11,7 +11,7 @@
 
 // main.cpp
 #include <iostream>
-#include "doubleLinkedList.h"
+#include "DoubleLinkedList.h"
 #include <list>
 
 // Standard library functions and free to using without std:: 
