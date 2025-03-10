@@ -58,7 +58,7 @@ class DoubleLinkedList {
         bool remove(int item);
 
         // Display item in the list
-        void print() const;
+        void print();
 };
 
 #endif // DOUBLELINKEDLIST_H
