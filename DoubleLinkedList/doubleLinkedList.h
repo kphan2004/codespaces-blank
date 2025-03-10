@@ -40,16 +40,16 @@ class DoubleLinkedList {
 
 
         // Current number of items in the list
-        int getCurrentSize() const;
+        int getCurrentSize();
 
         // Check if the list is empty
-        bool isEmpty() const;
+        bool isEmpty();
 
         // Clear all items from the list
         void clear();
 
         // Find a item in the list
-        int find (int item) const;
+        int find (int item);
 
         // Add a new item to the list
         void add (int item);

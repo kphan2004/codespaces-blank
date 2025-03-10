@@ -27,12 +27,12 @@ DoubleLinkedList::~DoubleLinkedList() {
 }
 
 // Current size
-int DoubleLinkedList::getCurrentSize() const {
+int DoubleLinkedList::getCurrentSize() {
     return size; // Return the current number of items
 }
 
 // List is empty
-bool DoubleLinkedList::isEmpty() const {
+bool DoubleLinkedList::isEmpty() {
     return size == 0; // Return true if size is 0, if false otherwise
 }
 
@@ -57,7 +57,7 @@ void DoubleLinkedList::clear() {
 }
 
 // Find index of an item in the list 
-int DoubleLinkedList::find (int item) const {
+int DoubleLinkedList::find (int item) {
     Node* recent = head;
     int index = 0;
 
