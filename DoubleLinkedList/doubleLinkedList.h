@@ -6,6 +6,7 @@ while preserving a sorted order.
 
 * Author: Kiet Phan
 * CSCI 2421 - Data Structures and Program Design
+* Homework 4
 * Due date: 03/09/2025
 */
 
