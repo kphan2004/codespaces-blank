@@ -11,6 +11,7 @@
         "vector": "cpp",
         "system_error": "cpp",
         "string_view": "cpp",
-        "iostream": "cpp"
+        "iostream": "cpp",
+        "stdexcept": "cpp"
     }
 }
