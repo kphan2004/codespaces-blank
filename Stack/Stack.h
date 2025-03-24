@@ -2,8 +2,8 @@
  * Stack Class Definition
  * This file defines a simple stack class that can store and manipulate a fixed size array of double value.
  *   
- * Kiet Phan
- * 03/23/2025
+ * Author: Kiet Phan
+ * Version: 03/23/2025
 ******************************************/
 
 // Stack.h
