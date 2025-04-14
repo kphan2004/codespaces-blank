@@ -12,6 +12,7 @@
         "system_error": "cpp",
         "string_view": "cpp",
         "iostream": "cpp",
-        "stdexcept": "cpp"
+        "stdexcept": "cpp",
+        "iomanip": "cpp"
     }
 }
