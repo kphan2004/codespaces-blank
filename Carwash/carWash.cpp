@@ -1,3 +1,10 @@
+/*
+* Header file
+
+* Kiet Phan
+* 4/13/2025
+*/
+
 // carWash.cpp
 #include "carWash.h"
 

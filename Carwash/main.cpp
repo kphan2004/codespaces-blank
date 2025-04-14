@@ -1,5 +1,11 @@
+/*
+* Car Wash Simulation main
+* Read arrival times froma files
+* Process using a queue, and prints timing stats
 
-
+* Kiet Phan
+* 4/13/2025
+*/
 
 
 // main.cpp
