@@ -57,6 +57,7 @@ int main() {
         currentTime = car.getDepartureTime();
         totalWait += car.getWaitTime();
         totalCharge += 3;
+        totalCarWashUseTime += car.getTotalTime();
         servedCars++;
 
         cout << left << setw(15) << car.getCarNumber()
@@ -69,12 +70,14 @@ int main() {
     
     cout << "\nEnd of Simulation\n\n";
     cout << "Statistics:\n";
-    cout << "Total car wash use time: ";
     cout << "Total Wait Time: " << totalWait << " minutes\n";
 
     int averageMin = servedCars > 0 ? totalWait / servedCars : 0;
     int averageSec = servedCars > 0 ? (totalWait * 60 / servedCars) % 60 : 0;
     cout << "Average Wait Time: " << averageMin << " minutes and " << averageSec << " seconds\n";
+
+    cout << "Total car wash use time: " << totalCarWashUseTime << " minutes\n";
+
     cout << fixed << setprecision(2);
     cout << "Percentage of time car was was in use: " << (totalCharge * 100.0 / SIMULATION_END_TIME) << "%\n";
 
