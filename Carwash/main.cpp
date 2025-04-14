@@ -69,16 +69,16 @@ int main() {
     cout << "Car " << carNumber++ << " arrived after closing time and was not served.\n";
     cout << "End of Simulation\n\n";
     cout << "Statistics:\n";
-    cout << "Total Wait Time: " << totalWait << " minutes\n";
+    cout << "   Total Wait Time: " << totalWait << " minutes\n";
 
     int averageMin = servedCars > 0 ? totalWait / servedCars : 0;
     int averageSec = servedCars > 0 ? (totalWait * 60 / servedCars) % 60 : 0;
-    cout << "Average Wait Time: " << averageMin << " minutes and " << averageSec << " seconds\n";
+    cout << "   Average Wait Time: " << averageMin << " minutes and " << averageSec << " seconds\n";
 
-    cout << "Total car wash use time: " << totalCarWashUseTime << " minutes\n";
+    cout << "   Total car wash use time: " << totalCarWashUseTime << " minutes\n";
 
     cout << fixed << setprecision(2);
-    cout << "Percentage of time car was was in use: " 
+    cout << "   Percentage of time car was was in use: " 
          << (totalCharge * 100.0 / SIMULATION_END_TIME) << "%\n";
 
     return 0;
