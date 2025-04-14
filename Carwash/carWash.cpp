@@ -1,12 +1,13 @@
 // carWash.cpp
 #include "carWash.h"
 
-// Constructor
+// Constructor initializes all times value to 0
 CarWash::CarWash(int num, int arrival) : carNumber(num), arrivalTime(arrival),
                     startTime(0), departureTime(0), waitTime(0), totalTime(0) {
 
 }
 
+// Getter method
 int CarWash::getCarNumber() {
     return carNumber;
 }
@@ -25,7 +26,8 @@ int CarWash::getWaitTime() {
 int CarWash::getTotalTime() {
     return totalTime;
 }
-       
+
+// Setter methods
 void CarWash::setCarNumber(int num) {
     carNumber = num;
 }
@@ -45,8 +47,9 @@ void CarWash::setTotalTime(int total) {
     totalTime = total;
 }
 
+// Calculates time values after start time is set
 void CarWash::calculateTimes() {
-    departureTime = startTime + WASH_DURATION;
-    waitTime = startTime - arrivalTime;
-    totalTime = departureTime - arrivalTime;
+    departureTime = startTime + WASH_DURATION; // Ends after 3 min
+    waitTime = startTime - arrivalTime;     // Time waited
+    totalTime = departureTime - arrivalTime;    // Total time in system
 }
