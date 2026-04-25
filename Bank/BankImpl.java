@@ -1,5 +1,5 @@
 /**
- * The Bank
+ * The Bank - Banker's Algorithm Implementation
  */
 public class BankImpl implements Bank
 {
@@ -40,6 +40,7 @@ public class BankImpl implements Bank
 
 		System.arraycopy(maxDemand, 0, maximum[threadNum], 0, maxDemand.length);
 		System.arraycopy(maxDemand, 0, need[threadNum], 0, maxDemand.length);
+		// Allocation is already zeroed by Java default 
 	}
 
 	/**
@@ -59,7 +60,7 @@ public class BankImpl implements Bank
 			System.out.print(allocation[i][m-1]+"]");
 		}
 		
-		// Do the same for "Max"
+		// Max matrix
 		System.out.print("\nMax = \t\t");
 		for (int i = 0; i < n; i++) {
 			System.out.print("\t[");
@@ -68,7 +69,7 @@ public class BankImpl implements Bank
 			System.out.print(maximum[i][m-1]+"]");
 		}
 		
-		// Do the same for "Need"
+		// Need matrix
 		System.out.print("\nNeed = \t\t");
 		for (int i = 0; i < n; i++) {
 			System.out.print("\t[");
@@ -100,17 +101,17 @@ public class BankImpl implements Bank
 			}
 		}
 
-		// Ok, there are. Now let's see if we can find an ordering of threads to finish
+		// Try to find a safe ordering
 		boolean[] canFinish = new boolean[n];
 		for (int i = 0; i < n; i++) {
 			canFinish[i] = false;
 		}
 
-		// Copy the available matrix to avail
+		// Working copy of available
 		int[] avail = new int[m];
 		System.arraycopy(available,0,avail,0,available.length);
 
-		// Now decrement avail by the request.
+		// Now decrement available by the request.
 		// Temporarily adjust the value of need and allocation for this thread.
 		for (int i = 0; i < m; i++) {
 			avail[i] -= request[i];
@@ -159,7 +160,7 @@ public class BankImpl implements Bank
 		System.out.println();
 
 		// Restore the value of need and allocation for this thread 
-		// (since we only temporarily adjusted them to check for safety)
+		// Since we only temporarily adjusted them to check for safety
 		for (int i = 0; i < m; i++) {
 			need[threadNum][i] += request[i];
 			allocation[threadNum][i] -= request[i];
@@ -185,17 +186,19 @@ public class BankImpl implements Bank
 	 * @return  false - the request is not granted.
 	 */
 	public synchronized boolean requestResources(int threadNum, int[] request)  {
+		// Check that request does not exceed declared need
 		for (int i = 0; i < m; i++) {
 			if (request[i] > need[threadNum][i]) {
 				System.out.println("Request exceeds maximum need limit.");
 				return false;
 			}
 		}
-		
+	
 		if (!isSafeState(threadNum, request)) {
 			// System.out.println("Customer # " + threadNum + " is denied.");
 			return false;
 		}
+		// Safe: allocate the resources to threadNum
 
 		// If it is safe, permanently allocate the resources to thread threadNum 
 		for (int i = 0; i < m; i++) {
@@ -210,6 +213,7 @@ public class BankImpl implements Bank
 	/**
 	 * Release resources
 	 *
+	 * @param ThreadNum - the customer releasing resources
 	 * @param release - the resources to be released.
 	 */
 	public synchronized void releaseResources(int threadNum, int[] release)  {
