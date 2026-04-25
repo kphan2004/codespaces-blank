@@ -1,7 +1,6 @@
 /**
- * The Bank - Banker's Algorithm Implementation
+ * The Bank
  */
-
 public class BankImpl implements Bank
 {
 	private int n;			// the number of threads in the system
@@ -22,12 +21,12 @@ public class BankImpl implements Bank
 
 		// initialize the resources array
 		available = new int[m];
-		System.arraycopy(resources, 0, available, 0, m);
+		System.arraycopy(resources,0,available,0,m);
 
 		// create the array for storing the maximum demand by each thread
-		maximum    = new int[TestBankers.NUMBER_OF_CUSTOMERS][];
-		allocation = new int[TestBankers.NUMBER_OF_CUSTOMERS][];
-		need       = new int[TestBankers.NUMBER_OF_CUSTOMERS][];
+		maximum = new int[n][];
+		allocation = new int[n][];
+		need = new int[n][];
 	}
 
 	/**
@@ -35,13 +34,12 @@ public class BankImpl implements Bank
 	 * its maximum demand with the bank.
 	 */
 	public void addCustomer(int threadNum, int[] maxDemand) {
-		maximum[threadNum]    = new int[m];
+		maximum[threadNum] = new int[m];
 		allocation[threadNum] = new int[m];
-		need[threadNum]       = new int[m];
+		need[threadNum] = new int[m];
 
 		System.arraycopy(maxDemand, 0, maximum[threadNum], 0, maxDemand.length);
-		System.arraycopy(maxDemand, 0, need[threadNum],    0, maxDemand.length);
-		// allocation is already zeroed by Java default
+		System.arraycopy(maxDemand, 0, need[threadNum], 0, maxDemand.length);
 	}
 
 	/**
@@ -49,37 +47,36 @@ public class BankImpl implements Bank
 	 */
 	public void getState() {
 		System.out.print("Available = \t[");
-		for (int i = 0; i < m - 1; i++)
-			System.out.print(available[i] + " ");
-		System.out.println(available[m - 1] + "]");
-
+		for (int i = 0; i < m-1; i++)
+			System.out.print(available[i]+" ");
+		System.out.println(available[m-1]+"]");
+		
 		System.out.print("\nAllocation = ");
 		for (int i = 0; i < n; i++) {
 			System.out.print("\t[");
-			for (int j = 0; j < m - 1; j++)
-				System.out.print(allocation[i][j] + " ");
-			System.out.print(allocation[i][m - 1] + "]");
+			for (int j = 0; j < m-1; j++)
+				System.out.print(allocation[i][j]+" ");
+			System.out.print(allocation[i][m-1]+"]");
 		}
-
-		// Max matrix
-		System.out.print("\nMax = \t");
+		
+		// Do the same for "Max"
+		System.out.print("\nMax = \t\t");
 		for (int i = 0; i < n; i++) {
 			System.out.print("\t[");
-			for (int j = 0; j < m - 1; j++)
-				System.out.print(maximum[i][j] + " ");
-			System.out.print(maximum[i][m - 1] + "]");
+			for (int j = 0; j < m-1; j++)
+				System.out.print(maximum[i][j]+" ");
+			System.out.print(maximum[i][m-1]+"]");
 		}
-
-		// Need matrix
-		System.out.print("\nNeed = \t");
+		
+		// Do the same for "Need"
+		System.out.print("\nNeed = \t\t");
 		for (int i = 0; i < n; i++) {
 			System.out.print("\t[");
-			for (int j = 0; j < m - 1; j++)
-				System.out.print(need[i][j] + " ");
-			System.out.print(need[i][m - 1] + "]");
+			for (int j = 0; j < m-1; j++)
+				System.out.print(need[i][j]+" ");
+			System.out.print(need[i][m-1]+"]");
 		}
-
-		System.out.println();
+		System.out.println("\n");
 	}
 
 
@@ -87,18 +84,15 @@ public class BankImpl implements Bank
 	 * Determines whether granting a request results in leaving
 	 * the system in a safe state or not.
 	 *
-	 * @return  true  - the system is in a safe state.
+	 * @return  true - the system is in a safe state.
 	 * @return  false - the system is NOT in a safe state.
 	 */
 	private boolean isSafeState(int threadNum, int[] request) {
-		System.out.print("\n Customer # " + threadNum + " requesting ");
+		System.out.print("\nCustomer # " + threadNum + " requesting ");
 		for (int i = 0; i < m; i++) System.out.print(request[i] + " ");
+		System.out.println();
 
-		System.out.print("Available = ");
-		for (int i = 0; i < m; i++)
-			System.out.print(available[i] + "  ");
-
-		// First check: sufficient resources available?
+		// First check if there are sufficient resources available
 		for (int i = 0; i < m; i++) {
 			if (request[i] > available[i]) {
 				System.err.println("INSUFFICIENT RESOURCES");
@@ -106,52 +100,72 @@ public class BankImpl implements Bank
 			}
 		}
 
-		// Try to find a safe ordering
+		// Ok, there are. Now let's see if we can find an ordering of threads to finish
 		boolean[] canFinish = new boolean[n];
-		for (int i = 0; i < n; i++)
+		for (int i = 0; i < n; i++) {
 			canFinish[i] = false;
+		}
 
-		// Working copy of available
+		// Copy the available matrix to avail
 		int[] avail = new int[m];
-		System.arraycopy(available, 0, avail, 0, available.length);
+		System.arraycopy(available,0,avail,0,available.length);
 
-		// Temporarily allocate the requested resources
+		// Now decrement avail by the request.
+		// Temporarily adjust the value of need and allocation for this thread.
 		for (int i = 0; i < m; i++) {
-			avail[i]              -= request[i];
-			need[threadNum][i]    -= request[i];
+			avail[i] -= request[i];
+			need[threadNum][i] -= request[i];
 			allocation[threadNum][i] += request[i];
 		}
 
 		/**
-		 * Try to find an ordering of threads so that each thread can finish.
-		 * Safety algorithm (Section 8.6.3.1).
+		 * Now try to find an ordering of threads so that
+		 * each thread can finish.
 		 */
 		System.out.print("Trying to find a possible ordering: ");
-		for (int i = 0; i < n; i++) {           // at most n passes
-			for (int j = 0; j < n; j++) {        // find a thread that can finish
+		int finishedCount = 0;
+		while (finishedCount < n) {
+			boolean foundProcess = false;
+			
+			// First find a thread that can finish
+			for (int j = 0; j < n; j++) {
 				if (!canFinish[j]) {
 					boolean temp = true;
 					for (int k = 0; k < m; k++) {
-						if (need[j][k] > avail[k])
+						if (need[j][k] > avail[k]) {
 							temp = false;
+							break;
+						}
 					}
-					if (temp) {                  // this thread can finish
+					
+					if (temp) { // if this thread can finish
 						canFinish[j] = true;
+						foundProcess = true;
+						finishedCount++;
 						System.out.print(j + " ");
-						for (int x = 0; x < m; x++)
+						
+						// Add its allocated resources back to avail
+						for (int x = 0; x < m; x++) {
 							avail[x] += allocation[j][x];
+						}
 					}
-				}
+				}	
+			}
+			// If we loop through all threads and none can finish, we are deadlocked
+			if (!foundProcess) {
+				break;
 			}
 		}
+		System.out.println();
 
-		// Restore the temporary changes
+		// Restore the value of need and allocation for this thread 
+		// (since we only temporarily adjusted them to check for safety)
 		for (int i = 0; i < m; i++) {
-			need[threadNum][i]       += request[i];
+			need[threadNum][i] += request[i];
 			allocation[threadNum][i] -= request[i];
 		}
 
-		// Check whether all threads could complete
+		// Now go through the boolean array and see if all threads could complete
 		boolean returnValue = true;
 		for (int i = 0; i < n; i++) {
 			if (!canFinish[i]) {
@@ -164,62 +178,65 @@ public class BankImpl implements Bank
 	}
 
 	/**
-	 * Make a request for resources. This is a synchronized method that returns
+	 * Make a request for resources. This is a blocking method that returns
 	 * only when the request can safely be satisfied.
 	 *
-	 * @return  true  - the request is granted.
+	 * @return  true - the request is granted.
 	 * @return  false - the request is not granted.
 	 */
-	public synchronized boolean requestResources(int threadNum, int[] request) {
-		// Check that request does not exceed declared need
+	public synchronized boolean requestResources(int threadNum, int[] request)  {
 		for (int i = 0; i < m; i++) {
 			if (request[i] > need[threadNum][i]) {
-				System.out.println("Request exceeds need");
+				System.out.println("Request exceeds maximum need limit.");
 				return false;
 			}
 		}
-
+		
 		if (!isSafeState(threadNum, request)) {
+			// System.out.println("Customer # " + threadNum + " is denied.");
 			return false;
 		}
 
-		// Safe: allocate the resources to threadNum
+		// If it is safe, permanently allocate the resources to thread threadNum 
 		for (int i = 0; i < m; i++) {
-			available[i]             -= request[i];
+			available[i] -= request[i];
 			allocation[threadNum][i] += request[i];
-			need[threadNum][i]       -= request[i];
+			need[threadNum][i] -= request[i];
 		}
 		return true;
 	}
 
 
 	/**
-	 * Release resources.
+	 * Release resources
 	 *
-	 * @param threadNum The customer releasing resources.
-	 * @param release   The resources to be released.
+	 * @param release - the resources to be released.
 	 */
-	public synchronized void releaseResources(int threadNum, int[] release) {
-		System.out.print("\n Customer # " + threadNum + " releasing ");
+	public synchronized void releaseResources(int threadNum, int[] release)  {
+		System.out.print("\nCustomer # " + threadNum + " releasing ");
 		for (int i = 0; i < m; i++) System.out.print(release[i] + " ");
+		System.out.println();
 
-		// Update available, allocation, and need
 		for (int i = 0; i < m; i++) {
-			available[i]             += release[i];
+			// Update available, allocation, and need tracking variables
+			available[i] += release[i];
 			allocation[threadNum][i] -= release[i];
-			need[threadNum][i]       += release[i];
+			need[threadNum][i] += release[i];
 		}
 
-		System.out.print("Available = ");
-		for (int i = 0; i < m; i++)
-			System.out.print(available[i] + "  ");
+		System.out.print("Available = [");
+		for (int i = 0; i < m-1; i++) {
+			System.out.print(available[i] + " ");
+		}
+		System.out.println(available[m-1] + "]");
 
 		System.out.print("Allocated = [");
-		for (int i = 0; i < m; i++)
-			System.out.print(allocation[threadNum][i] + "  ");
-		System.out.print("]");
+		for (int i = 0; i < m-1; i++) {
+			System.out.print(allocation[threadNum][i] + " "); 
+		}
+		System.out.println(allocation[threadNum][m-1] + "]\n"); 
 
-		// Notify waiting threads that resources have been freed
-		notifyAll();
+		// there may be some threads that can now proceed
+		// notifyAll();
 	}
 }
